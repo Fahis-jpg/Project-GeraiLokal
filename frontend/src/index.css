@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* Primary Colors */
+  --color-gl-primary-100: #D0D5DD;
+  --color-gl-primary-200: #8F9AAA;
+  --color-gl-primary-300: #53647C;
+  --color-gl-primary-400: #2D3D59;
+  --color-gl-primary-500: #12213E;
+
+  /* Secondary Colors */
+  --color-gl-secondary-100: #FFF9CC;
+  --color-gl-secondary-200: #FFE499;
+  --color-gl-secondary-300: #FFD566;
+  --color-gl-secondary-400: #FFC833;
+  --color-gl-secondary-500: #FAB800;
+
+  /* Accent Colors */
+  --color-gl-accent-100: #F4EDDF;
+  --color-gl-accent-200: #E9DBBF;
+  --color-gl-accent-300: #DFCAA0;
+  --color-gl-accent-400: #D4BB80;
+  --color-gl-accent-500: #C9AB6D;
+
+  /* Neutral Colors */
+  --color-gl-neutral-100: #FFFDF8;
+  --color-gl-neutral-200: #F5F1E8;
+  --color-gl-neutral-300: #E8E1D3;
+  --color-gl-neutral-400: #D5CBBB;
+  --color-gl-neutral-500: #B8AA93;
+
+  /* Semantic Colors */
+  --color-gl-red: #D92D20;
+  --color-gl-orange: #F79009;
+  --color-gl-blue: #0BA5EC;
+  --color-gl-green: #12B76A;
+}
+
+@layer base {
+  html {
+    font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+}

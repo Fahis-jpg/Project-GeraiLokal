@@ -31,10 +31,14 @@ export default function Login({
       });
 
       if (res.data?.success && res.data?.data) {
+        if (res.data.access_token) {
+          localStorage.setItem('gl_access_token', res.data.access_token);
+        }
         onLoginSuccess(res.data.data);
       } else {
         setErrorMessage('Login berhasil, tetapi data sesi tidak diterima.');
       }
+      
     } catch (err) {
       const data = err.response?.data;
       const msg =

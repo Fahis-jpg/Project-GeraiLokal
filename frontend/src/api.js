@@ -1,40 +1,17 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-  },
 });
 
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (
-      error.response?.status === 401 &&
-      error.response?.data?.message === 'Invalid or expired token' &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      try {
-        await axios.post(
-          'http://localhost:3000/api/auth/refresh',
-          {},
-          {
-            withCredentials: true,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-          }
-        );
-        return api(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
-      }
-    }
-    return Promise.reject(error);
+// Sisipkan Bearer token dari localStorage sebagai cadangan HttpOnly Cookie saat lintas domain Vercel
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('gl_access_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 export default api;

@@ -1,12 +1,27 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.warn('PERINGATAN: DATABASE_URL belum diatur di environment variables.');
+}
+
+const useSSL =
+  process.env.NODE_ENV === 'production' ||
+  Boolean(process.env.VERCEL) ||
+  (connectionString && (connectionString.includes('neon.tech') || connectionString.includes('sslmode=require')));
+
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+  connectionString,
+  ssl: useSSL ? { rejectUnauthorized: false } : false,
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
+});
+
+pool.on('error', (err) => {
+  console.error('Unexpected PostgreSQL pool error:', err);
 });
 
 module.exports = pool;
